@@ -12,11 +12,25 @@ public class Affectation {
         b2 = !b2;
         System.out.println("Résultat de réaffectation sur un type natif : ");
         System.out.println( b1 );
+        System.out.println("Basculement de la valeur native à partir d'une fonction : ");
+        faireBasculerBooleen(b1);
+        System.out.println( b1 + " -> failed");
         Interrupteur i1 = new Interrupteur();
         Interrupteur i2 = i1;
         i2.basculer();
         System.out.println("Résultat de réaffectation sur des objets : ");
         System.out.println( i1.estEnMarche );
+        System.out.println("Basculement de la valeur objet à partir d'une fonction : ");
+        faireBasculerInterrupteur(i1);
+        System.out.println( i1.estEnMarche + " -> done");
+    }
+
+    private static void faireBasculerBooleen(boolean unBool) {
+        unBool = !unBool;
+    }
+
+    private static void faireBasculerInterrupteur(Interrupteur unInterrupteur) {
+        unInterrupteur.basculer();
     }
 
 }
