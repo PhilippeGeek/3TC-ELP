@@ -1,9 +1,10 @@
-package fr.insa.lyon.tc.elp;
+package fr.insa.lyon.tc.elp.introduction;
 
 /**
  * Mise en évidence des changements d'affectations entre types natifs et objets.
  */
-@SuppressWarnings({"ConstantConditions", "UnnecessaryLocalVariable"}) // Parce qu'on fait des chose qui pourrait être simplifiés
+@SuppressWarnings({"ConstantConditions", "UnnecessaryLocalVariable", "UnusedAssignment"})
+// Parce qu'on fait des chose qui pourrait être simplifiés
 public class Affectation {
 
     public static void main(String... args){

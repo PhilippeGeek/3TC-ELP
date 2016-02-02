@@ -1,4 +1,4 @@
-package fr.insa.lyon.tc.elp;
+package fr.insa.lyon.tc.elp.introduction;
 
 /** Classe modelisant un interrupteur à bascule. */
 class Interrupteur {

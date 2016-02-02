@@ -1,4 +1,4 @@
-package fr.insa.lyon.tc.elp;
+package fr.insa.lyon.tc.elp.introduction;
 
 public class ArgumentsApp {
     public static void main(String... args){
