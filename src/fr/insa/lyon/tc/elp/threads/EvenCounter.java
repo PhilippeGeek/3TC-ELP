@@ -30,7 +30,7 @@ public class EvenCounter implements Runnable {
      */
     public void run() {
         while (true) {
-            System.out.println(">" + toNextEven());
+            System.out.println(Thread.currentThread().getName()+">" + toNextEven());
         }
     }
 
