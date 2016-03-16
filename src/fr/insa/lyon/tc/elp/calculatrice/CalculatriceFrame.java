@@ -15,6 +15,7 @@ public class CalculatriceFrame extends JFrame implements Computer{
 
     private Stack<ComputeOperation> operations = new Stack<>();
     private float currentValue;
+    private Object currentInputValue;
 
     public CalculatriceFrame(){
         super(CALCULATRICE_TITLE);
@@ -46,5 +47,13 @@ public class CalculatriceFrame extends JFrame implements Computer{
 
     public float getCurrentValue() {
         return currentValue;
+    }
+
+    public Object getCurrentInputValue() {
+        return currentInputValue;
+    }
+
+    public void setCurrentInputValue(Object currentInputValue) {
+        this.currentInputValue = currentInputValue;
     }
 }

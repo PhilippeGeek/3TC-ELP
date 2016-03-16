@@ -10,11 +10,6 @@ public abstract class Operation implements ComputeOperation {
     private Float originValue;
     protected Float resultValue;
 
-    public Operation(float left, float right){
-        originValue = left;
-        resultValue = compute(left, right);
-    }
-
     @Override
     public float getResult(float right) {
         if(resultValue == null)
