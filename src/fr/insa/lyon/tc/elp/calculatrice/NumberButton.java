@@ -22,6 +22,9 @@ public class NumberButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.setCurrentInputValue(frame.getCurrentInputValue()*10+value);
+        if(frame.isShouldEraseInput())
+            frame.setCurrentInputValue((float)value);
+        else
+            frame.setCurrentInputValue(frame.getCurrentInputValue()*10+value);
     }
 }

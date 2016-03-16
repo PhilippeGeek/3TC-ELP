@@ -22,6 +22,7 @@ public class CalculatriceFrame extends JFrame implements Computer{
     private Float currentValue = null;
     private Float memorySource = null;
     private Float currentInputValue = 0.0f;
+    private boolean shouldEraseInput = true;
     private ComputeOperation currentOperation;
 
     public CalculatriceFrame() {
@@ -33,28 +34,38 @@ public class CalculatriceFrame extends JFrame implements Computer{
         add(input, BorderLayout.NORTH);
 
         {
-            JPanel buttonsPanel = new JPanel(new GridLayout(5, 3));
+            JPanel buttonsPanel = new JPanel(new GridLayout(4, 3));
             for (int i = 7; i > 0; i = i - 3)
                 for (int j = 0; j < 3; j++)
                     buttonsPanel.add(new NumberButton(this, i + j));
+            buttonsPanel.add(new JPanel());
             buttonsPanel.add(new NumberButton(this, 0));
-            buttonsPanel.add(new OperationButton(this, "+", Addition.class));
-            buttonsPanel.add(new OperationButton(this, "-", Substraction.class));
-            buttonsPanel.add(new OperationButton(this, "/", Division.class));
-            buttonsPanel.add(new OperationButton(this, "*", Multiply.class));
+            buttonsPanel.add(new JPanel());
+
             //buttonsPanel.add(new OperationButton(this, "sqrt", Multiply.class));
             //buttonsPanel.add(new OperationButton(this, "^2", Multiply.class));
             add(buttonsPanel, BorderLayout.CENTER);
         }
 
         {
+            JPanel buttonsPanel = new JPanel(new GridLayout(5,1));
+            buttonsPanel.add(new OperationButton(this, "+", Addition.class));
+            buttonsPanel.add(new OperationButton(this, "-", Substraction.class));
+            buttonsPanel.add(new OperationButton(this, "/", Division.class));
+            buttonsPanel.add(new OperationButton(this, "*", Multiply.class));
             JButton computeButton = new JButton("=");
             computeButton.addActionListener((e) -> {
                 if (currentOperation != null)
                     computeCurrentOperation();
                 setCurrentInputValue(getCurrentValue());
+                setShouldEraseInput(true);
             });
-            add(computeButton, BorderLayout.EAST);
+            buttonsPanel.add(computeButton);
+            add(buttonsPanel, BorderLayout.EAST);
+        }
+
+        {
+
         }
 
         {
@@ -89,12 +100,13 @@ public class CalculatriceFrame extends JFrame implements Computer{
         if(memorySource!=null && currentOperation!=null){
             computeCurrentOperation();
             setCurrentInputValue(currentValue);
+            setShouldEraseInput(true);
             this.currentOperation = operation;
             this.memorySource = this.currentInputValue;
         } else {
             this.currentOperation = operation;
             this.memorySource = this.currentInputValue;
-            setCurrentInputValue(0.0f);
+            setShouldEraseInput(true);
         }
     }
 
@@ -130,5 +142,15 @@ public class CalculatriceFrame extends JFrame implements Computer{
 
     public void setMemorySource(float memorySource) {
         this.memorySource = memorySource;
+    }
+
+    public boolean isShouldEraseInput() {
+        boolean val = shouldEraseInput;
+        setShouldEraseInput(!val);
+        return val;
+    }
+
+    public void setShouldEraseInput(boolean shouldEraseInput) {
+        this.shouldEraseInput = shouldEraseInput;
     }
 }
