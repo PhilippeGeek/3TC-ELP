@@ -1,5 +1,9 @@
 package fr.insa.lyon.tc.elp.calculatrice;
 
+import fr.insa.lyon.tc.elp.calculatrice.operations.Addition;
+import fr.insa.lyon.tc.elp.calculatrice.operations.Division;
+import fr.insa.lyon.tc.elp.calculatrice.operations.Multiply;
+import fr.insa.lyon.tc.elp.calculatrice.operations.Substraction;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.swing.*;
@@ -12,15 +16,59 @@ import java.util.Stack;
 public class CalculatriceFrame extends JFrame implements Computer{
 
     public static final String CALCULATRICE_TITLE = "Calculatrice";
+    private final JTextField input;
 
     private Stack<ComputeOperation> operations = new Stack<>();
-    private float currentValue;
-    private Object currentInputValue;
+    private Float currentValue = null;
+    private Float memorySource = null;
+    private Float currentInputValue = 0.0f;
+    private ComputeOperation currentOperation;
 
-    public CalculatriceFrame(){
+    public CalculatriceFrame() {
         super(CALCULATRICE_TITLE);
-        setMinimumSize(new Dimension(300, 200));
+        setMinimumSize(new Dimension(500, 300));
         setLayout(new BorderLayout());
+
+        this.input = new JTextField();
+        add(input, BorderLayout.NORTH);
+
+        {
+            JPanel buttonsPanel = new JPanel(new GridLayout(5, 3));
+            for (int i = 7; i > 0; i = i - 3)
+                for (int j = 0; j < 3; j++)
+                    buttonsPanel.add(new NumberButton(this, i + j));
+            buttonsPanel.add(new NumberButton(this, 0));
+            buttonsPanel.add(new OperationButton(this, "+", Addition.class));
+            buttonsPanel.add(new OperationButton(this, "-", Substraction.class));
+            buttonsPanel.add(new OperationButton(this, "/", Division.class));
+            buttonsPanel.add(new OperationButton(this, "*", Multiply.class));
+            //buttonsPanel.add(new OperationButton(this, "sqrt", Multiply.class));
+            //buttonsPanel.add(new OperationButton(this, "^2", Multiply.class));
+            add(buttonsPanel, BorderLayout.CENTER);
+        }
+
+        {
+            JButton computeButton = new JButton("=");
+            computeButton.addActionListener((e) -> {
+                if (currentOperation != null)
+                    computeCurrentOperation();
+                setCurrentInputValue(getCurrentValue());
+            });
+            add(computeButton, BorderLayout.EAST);
+        }
+
+        {
+            JButton clear = new JButton("C");
+            clear.addActionListener((e) -> {
+                currentOperation = null;
+                setCurrentValue(0.0f);
+                setMemorySource(0.0f);
+                setCurrentInputValue(0.0f);
+            });
+            add(clear, BorderLayout.WEST);
+        }
+
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
@@ -38,7 +86,23 @@ public class CalculatriceFrame extends JFrame implements Computer{
 
     @Override
     public void act(ComputeOperation operation) {
+        if(memorySource!=null && currentOperation!=null){
+            computeCurrentOperation();
+            setCurrentInputValue(currentValue);
+            this.currentOperation = operation;
+            this.memorySource = this.currentInputValue;
+        } else {
+            this.currentOperation = operation;
+            this.memorySource = this.currentInputValue;
+            setCurrentInputValue(0.0f);
+        }
+    }
 
+    private void computeCurrentOperation() {
+        currentOperation.setSource(memorySource);
+        currentValue = currentOperation.getResult(currentInputValue);
+        this.operations.push(currentOperation);
+        currentOperation = null;
     }
 
     public void setCurrentValue(float currentValue) {
@@ -46,14 +110,25 @@ public class CalculatriceFrame extends JFrame implements Computer{
     }
 
     public float getCurrentValue() {
+        if(currentValue == null)
+            return 0.0f;
         return currentValue;
     }
 
-    public Object getCurrentInputValue() {
+    public Float getCurrentInputValue() {
         return currentInputValue;
     }
 
-    public void setCurrentInputValue(Object currentInputValue) {
+    public void setCurrentInputValue(Float currentInputValue) {
+        if(((float)(int)(currentInputValue/1))==currentInputValue){
+            this.input.setText(Integer.toString((int)(currentInputValue/1)));
+        } else {
+            this.input.setText(Float.toString(currentInputValue));
+        }
         this.currentInputValue = currentInputValue;
+    }
+
+    public void setMemorySource(float memorySource) {
+        this.memorySource = memorySource;
     }
 }

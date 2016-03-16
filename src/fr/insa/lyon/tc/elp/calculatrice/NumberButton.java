@@ -22,6 +22,6 @@ public class NumberButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        frame.setCurrentValue(frame.getCurrentValue()*10+value);
+        frame.setCurrentInputValue(frame.getCurrentInputValue()*10+value);
     }
 }

@@ -27,6 +27,8 @@ public abstract class Operation implements ComputeOperation {
         resultValue = null;
         Float previousValue = originValue;
         originValue = i;
+        if(previousValue == null)
+            return 0.0f;
         return previousValue;
     }
 
